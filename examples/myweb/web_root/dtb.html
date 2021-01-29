@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+  
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 18px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+<title>Registration Form</title>    
+</head>
+<body onload="getCfg()">
+<div class="sidenav">
+  <a href="/" onclick="loadDoc()">  About</a>
+  <a href="">Services</a>
+  <a href="">Clients</a>
+  <a href="">Contact</a>
+</div>    
+  
+   
+<link href = "register.css" type = "text/css" rel = "stylesheet" />    
+
+<h2>Sign Up</h2>    
+<!--<form name = "form1">    -->
+    <div class = "container">    
+        <div>    
+            <label>Host:</label>    
+            <input type = "text" name = "host" id="host" value = "" required/>    
+        </div>    
+        <div>    
+            <label>Port:</label>    
+            <input type = "text" name = "port" id="port" value = "" required />    
+        </div>    
+        <div>    
+            <label>Database:</label>    
+            <input type = "text" name = "database" id="database" value = "" required/>    
+        </div> 
+        <div>    
+          <label>User:</label>    
+          <input type = "text" name = "user" id="user" value = "" required/>    
+      </div>    
+        <div>    
+            <label>Password:</label>    
+            <input type = "password" name = "pwd" id="pwd" value = ""/> 
+            <input type="checkbox" onclick="showPass()"><label style="width: auto;font-size: 15px;">Show Password</label> 
+        </div>
+        <div>
+            
+        </div>  
+        <button class="button" onclick="getCfg()">Get Configure</button>
+        <button class="button" style="margin-left:100px;" onclick="confDtb()">Configure</button>  
+    </div>    
+<!--</form>    -->
+<p class="main" id="test"></p>
+<p class="main" id="id01"></p>
+</body>
+<script src="func.js" type="text/javascript"></script>   
+</html>
