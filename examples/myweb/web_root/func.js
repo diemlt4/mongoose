@@ -69,17 +69,13 @@ function loadDoc() {
     xhttp.send();
 }
 function submitData() {
-    var data = new FormData();
-    data.append("ssid", document.getElementById("ssid").value);
-    data.append('pwd', document.getElementById("pwd").value);
-
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/setwifi.asp', true);
+    xhr.open('POST', '/setwifi.asp', false);
     xhr.onload = function () {
         // do something to response
         console.log(this.responseText);
     };
     var a = "ssid=" + document.getElementById("ssid").value +"&pwd=" + document.getElementById("pwd").value;
     xhr.send(a);
-    alert("The form was submitted");
+    //alert("The form was submitted");
 }

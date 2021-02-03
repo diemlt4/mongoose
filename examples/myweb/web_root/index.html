@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="register.css" type="text/css" rel="stylesheet" />
@@ -10,25 +11,29 @@
 <body>
 
   <div class="sidenav">
-    <a href="" onclick="loadDoc()"> About</a>
-    <a href="dtb.html" id="service">Services</a>
-    <a href="">Clients</a>
-    <a href="">Contact</a>
+    <a href="" onclick="loadDoc()"> Wifi</a>
+    <a href="dtb.html" id="service">Database</a>
+    <a href="about.html">About Us</a>
   </div>
 
   <div class="container">
-    <h1>Sidebar</h1>
-    <p id="demo"> First Demo</p>
-    <!--<form name="inputform" onsubmit="submitData()">-->
-    <form name="inputform"></form>
-    <label for="fname">SSID: </label>
-    <input type="text" placeholder="Wifi SSID" name="ssid" id="ssid"><br>
-    <label for="lname">Pass: </label>
-    <input type="password" placeholder="Passkey" name="pwd" id="pwd">
-    <input type="checkbox" onclick="showPass()">Show Password <br>
-    <!--<input type="submit" value="Submit">-->
-    <button class="button" onclick="submitData()">Submit</button>
-    <!--</form>-->
+    <h2>Configure WIFI Connection</h2>
+    <p id="demo"> Please enter your WIFI SSID and Password:</p>
+    <form name="inputform" onsubmit="submitData()" method="post">
+      <!--<form name="inputform" method="post">-->
+      <div>
+        <label for="fname">SSID: </label>
+        <input type="text" placeholder="Wifi SSID" name="ssid" id="ssid" required>
+      </div>
+      <div>
+        <label for="lname">Pass: </label>
+        <input type="password" placeholder="Passkey" name="pwd" id="pwd" required>
+        <input type="checkbox" onclick="showPass()"><label style="width: auto;font-size: 15px;">Show Password</label>
+      </div>
+
+      <input type="submit" class="button" style="margin-left:270px;" value="Submit">
+      <!--<button class="button" onclick="submitData()">Submit</button>-->
+    </form>
   </div>
   <script src="func.js" type="text/javascript"></script>
 

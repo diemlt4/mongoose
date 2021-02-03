@@ -3,7 +3,31 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 #include "mongoose.h"
+
+void stopWpa()
+{
+   system("sudo pkill -f wpa_supplicant");
+}
+void createCfgFile(char *ssid, char *pass)
+{
+ system("sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf");
+ system("echo \"ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\" > /etc/wpa_supplicant/wpa_supplicant.conf");
+ system("echo \"update_config=1\" >> /etc/wpa_supplicant/wpa_supplicant.conf");
+ system("echo \"country=US\r\n\" >> /etc/wpa_supplicant/wpa_supplicant.conf");
+  char buf[100];
+sprintf(buf, "sudo wpa_passphrase %s %s >> /etc/wpa_supplicant/wpa_supplicant.conf", ssid, pass);
+printf("buf is %s\r\n", buf);
+ system(buf);
+
+  
+}
+void startWpa()
+{
+   system("sudo wpa_supplicant -B -Dnl80211,wext -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf &");
+}
 
 void trim (char *cs)
 {
@@ -88,9 +112,7 @@ void getDTBCfg(char *host, char *port, char *name, char *user, char *pass) {
   fclose(f);
   if (line) free(line);
 }
-void createCfgFile(char *ssid, char *pss) {
-  system("echo ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\r\n");
-}
+
 // HTTP request handler function. It implements the following endpoints:
 //   /api/video1 - hangs forever, returns MJPEG video stream
 //   all other URI - serves web_root/ directory
@@ -134,18 +156,23 @@ static void cb(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
       mg_printf(c, "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n");
       //mg_http_reply(c, 200, "", "{\"host\": \"%s\"}\n", cmd);
     } else if (mg_http_match_uri(hm, "/setwifi.asp")) {
-      printf("Got http body :\r\n");
+      printf("Got http body len %d:\r\n", hm->body.len);
+      
       printf("%s\r\n", hm->body.ptr);
 
-      char cmd[100] = {0}, filename[100];
-      const char *data;
-      const char *data1;
+      char ssid[50] = {0}, password[20]={0};
       int data_len;
-      mg_http_get_var(&hm->body, "ssid", cmd, 100);
-      printf("got value user is: %s\r\n", cmd);
-      mg_http_get_var(&hm->body, "pwd", cmd, 100);
-      printf("got value password is: %s\r\n", cmd);
-    
+      int ret;
+      mg_http_get_var(&hm->body, "pwd", password, 100);
+      printf("got value password is: %s\r\n", password);
+      ret = mg_http_get_var(&hm->body, "ssid", ssid, 100);
+      if(ret >= 0){
+        printf("got value user is: %s\r\n", ssid);
+        stopWpa();
+        sleep(1);
+        createCfgFile(ssid, password);
+        startWpa();
+      }
       mg_printf(c, "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n");
     } else if (mg_http_match_uri(hm, "/api/config/watch")) {
       c->label[0] = 'W';  // Mark ourselves as a config watcher
@@ -161,7 +188,7 @@ int main(void) {
   struct mg_mgr mgr;
 
   mg_mgr_init(&mgr);
-  mg_http_listen(&mgr, "http://localhost:8000", cb, NULL);
+  mg_http_listen(&mgr, "http://0.0.0.0:8000", cb, NULL);
 
   for (;;) mg_mgr_poll(&mgr, 50);
 
