@@ -2,59 +2,23 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href = "register.css" type = "text/css" rel = "stylesheet" />
 <style>
-
-.sidenav {
-  height: 100%;
-  width: 160px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-.sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-  
-
-.main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 18px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
 </style>
 <title>Registration Form</title>    
 </head>
 <body onload="getCfg()">
 <div class="sidenav">
   <a href="/" onclick="loadDoc()">Wifi</a>
-  <a href="">Database</a>
+  <a href="" class="active" >Database</a>
   <a href="about.html">About Us</a>
 </div>    
   
    
-<link href = "register.css" type = "text/css" rel = "stylesheet" />    
+    
 
 <h2>Setup Database Connection</h2>    
-<form name = "form1" method="post">   
+<form name = "form1" method="post" onsubmit="confDtb()">   
     <div class = "container">    
         <div>    
             <label>Host:</label>    
@@ -79,9 +43,10 @@
         </div>
         <div>
             
-        </div>  
+        </div> 
+        <input type="submit" class="button" style="margin-left:250px;" value="Configure"> 
         <!--<button class="button" onclick="getCfg()">Get Configure</button>-->
-        <button class="button" style="margin-left:250px;" onclick="confDtb()">Configure</button>  
+       <!-- <button class="button" style="margin-left:250px;" onclick="confDtb()">Configure</button>  -->
     </div>    
 </form>  
 <p class="main" id="test"></p>

@@ -31,6 +31,8 @@ void startWpa()
 
 void trim (char *cs)
 {
+  if(!cs)
+  return;
   char *p;
   size_t len = strlen(cs);
   for (p = cs + len - 1; isspace (*p); --p) /* nothing */ ;
@@ -144,16 +146,32 @@ static void cb(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
       }\n", host, port, name, user, password);
     }else if (mg_http_match_uri(hm, "/cfgdatabase")) {
       char cmd[100] = {0};
-      printf("Got http body :\r\n");
+      char host[50] = {0}, port[5]={0}, name[20]={0}, user[10]={0}, password[20]={0};
+      printf("Configure xxxxxxxxxxxxxxxxxxxxxxx:\r\n");
       // printf("%.*s", (int) hm->message.len, hm->message.ptr);
-      printf("%s\r\n", hm->message.ptr);
-      mg_http_get_var(&hm->body, "users", cmd, 100);
-      printf("got value user is: %s\r\n", cmd);
-      saveDTBHost("192.168.1.2", "1234", "test", "rooot", "23434");
+      printf("%s\r\n", hm->body.ptr);
+      mg_http_get_var(&hm->body, "host", host, 50);
+      printf("got value user is: %s\r\n", host);
+      mg_http_get_var(&hm->body, "port", port, 5);
+      printf("got value user is: %s\r\n", port);
+      mg_http_get_var(&hm->body, "database", name, 20);
+      printf("got value user is: %s\r\n", name);
+      mg_http_get_var(&hm->body, "user", user, 10);
+      printf("got value user is: %s\r\n", user);
+      mg_http_get_var(&hm->body, "pwd", password, 50);
+      printf("got value user is: %s\r\n", password);
+
+      saveDTBHost(host, port, name, user, password);
       
-      getDTBCfg(cmd, NULL, NULL, NULL, NULL);
+      getDTBCfg(host, port, name, user, password);
       printf("got host is: %s\r\n", cmd);
-      mg_printf(c, "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n");
+      //mg_printf(c, "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n");
+      mg_http_reply(c, 200, "", "{\"host\": \"%s\", \
+      \"port\": \"%s\", \
+      \"database\": \"%s\", \
+      \"user\": \"%s\", \
+      \"password\": \"%s\" \
+      }\n", host, port, name, user, password);
       //mg_http_reply(c, 200, "", "{\"host\": \"%s\"}\n", cmd);
     } else if (mg_http_match_uri(hm, "/setwifi.asp")) {
       printf("Got http body len %d:\r\n", hm->body.len);
